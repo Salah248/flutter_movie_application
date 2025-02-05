@@ -14,10 +14,10 @@ class SplashView extends StatelessWidget {
       body: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
          if(state is UnAuthenticated){
-          AppNavigator.pushReplacement(context, SignInView());
+          AppNavigator.pushReplacement(context, HomePageView());
           
          }else{
-          AppNavigator.pushReplacement(context, HomePageView());
+          AppNavigator.pushReplacement(context, SignInView());
 
          }
         },
