@@ -1,11 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_application/common/helper/navigation/app_navigation.dart';
-import 'package:flutter_movie_application/presentation/home_page/home_page_view.dart';
 import 'package:flutter_movie_application/presentation/resources/app_colores.dart';
 import 'package:flutter_movie_application/presentation/sign_up_page/sign_up_view.dart';
-import 'package:reactive_button/reactive_button.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
@@ -51,7 +48,6 @@ class _SignInViewState extends State<SignInView> {
             SizedBox(
               height: 40,
             ),
-            _signInButton(),
             SizedBox(
               height: 10,
             ),
@@ -89,25 +85,6 @@ class _SignInViewState extends State<SignInView> {
     );
   }
 
-  Widget _signInButton() {
-    return ReactiveButton(
-      activeColor: AppColors.primary,
-      title: 'Sign In',
-      onPressed: () async {
-        AppNavigator.pushReplacement(context, HomePageView());
-      },
-      onSuccess: () {
-        if (kDebugMode) {
-          ('Action succeeded!');
-        }
-      },
-      onFailure: (String error) {
-        if (kDebugMode) {
-          print('Action failed: $error');
-        } // Fix: Return a Future
-      },
-    );
-  }
 
   Widget _buildTextButton() {
     return Text.rich(

@@ -27,4 +27,28 @@ class MovieRepositoryImpl extends MoiveRepository {
       },
     );
   }
+  
+  @override
+  Future<Either> getNowPlayingMovies()  async{
+        var returnData = await sl<MovieService>().getNowPlayingMovies();
+
+    return returnData.fold(
+      (error) {
+        return Left(error);
+      },
+      (data) {
+        var movies = List.from(data['results'])
+            .map(
+              (item) => MovieMapper.toEntity(
+                MovieModel.fromJson(item),
+              ),
+            )
+            .toList();
+
+        return Right(movies);
+      },
+    );
+  }
+  
+ 
 }

@@ -1,14 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// This interceptor is used to show request and response logs
 class LoggerInterceptor extends Interceptor {
-  Logger logger = Logger(
-    printer: PrettyPrinter(methodCount: 0, colors: true, printEmojis: true),
-  );
+  Logger logger = Logger(printer: PrettyPrinter(methodCount: 0, colors: true,printEmojis: true));
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
+  void onError( DioException err, ErrorInterceptorHandler handler) {
     final options = err.requestOptions;
     final requestPath = '${options.baseUrl}${options.path}';
     logger.e('${options.method} request ==> $requestPath'); //Error log
@@ -29,7 +28,19 @@ class LoggerInterceptor extends Interceptor {
     logger.d('STATUSCODE: ${response.statusCode} \n '
         'STATUSMESSAGE: ${response.statusMessage} \n'
         'HEADERS: ${response.headers} \n'
-        'Data: ${response.data}',); // Debug log
+        'Data: ${response.data}'); // Debug log
     handler.next(response); // continue with the Response
+  }
+}
+
+
+class AuthorizationInterceptor extends Interceptor {
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final token  = sharedPreferences.getString('token');
+    options.headers['Authorization'] = "Bearer $token";
+    handler.next(options); // continue with the Request
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_application/presentation/home_page/home_page_view.dart';
-import 'package:flutter_movie_application/presentation/movie_details/moive_details_view.dart';
+import 'package:flutter_movie_application/presentation/movie_watch/moive_watch_page.dart';
 import 'package:flutter_movie_application/presentation/search_page/search_page_view.dart';
 import 'package:flutter_movie_application/presentation/sign_up_page/sign_up_view.dart';
 import 'package:flutter_movie_application/presentation/signin_page/sign_in_view.dart';
@@ -29,7 +29,7 @@ class RouteGenrator {
       case Routes.homePage:
         return MaterialPageRoute(builder: (_) => const HomePageView());
       case Routes.moiveDetails:
-        return MaterialPageRoute(builder: (_) => const MoiveDetailsView());
+        return MaterialPageRoute(builder: (_) => const MoiveWatchPage());
       case Routes.searchPage:
         return MaterialPageRoute(builder: (_) => const SearchPageView());
       default:

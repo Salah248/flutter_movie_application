@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_movie_application/di.dart';
-import 'package:flutter_movie_application/presentation/resources/theme_manager.dart';
+import 'package:flutter_movie_application/core/configs/themes/theme_manager.dart';
 import 'package:flutter_movie_application/presentation/splash_page/bloc/cubit/splash_cubit.dart';
 import 'package:flutter_movie_application/presentation/splash_page/splash_view.dart';
 
