@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_movie_application/common/bloc/cubit/generic_data_cubit.dart';
 import 'package:flutter_movie_application/common/widgets/movie_card.dart';
-import 'package:flutter_movie_application/presentation/movie_watch/Bloc/cubit/similar_movies_cubit.dart';
+import 'package:flutter_movie_application/di.dart';
+import 'package:flutter_movie_application/domain/movie/entities/movie.dart';
+import 'package:flutter_movie_application/domain/movie/usecases/get_similar_movies.dart';
 
 class SimilarMovies extends StatelessWidget {
   const SimilarMovies({super.key, required this.id});
-final int id;
+  final int id;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SimilarMoviesCubit()..getSimilarMovies(id),
-      child: BlocBuilder<SimilarMoviesCubit, SimilarMoviesState>(
+      create: (context) => GenericDataCubit()
+        ..getData<List<MovieEntity>>(
+          sl<GetSimilarMoviesUseCase>(),
+          params: id,
+        ),
+      child: BlocBuilder<GenericDataCubit, GenericDataState>(
         builder: (context, state) {
-          if (state is SimilarMoviesLoading) {
+          if (state is GenericDataLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is SimilarMoviesLoaded) {
+          } else if (state is GenericDataLoaded) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -35,18 +42,18 @@ final int id;
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return MovieCard(
-                        movieEntity: state.movies[index],
+                        movieEntity: state.data[index],
                       );
                     },
                     separatorBuilder: (context, index) => SizedBox(
                       width: 10,
                     ),
-                    itemCount: state.movies.length,
+                    itemCount: state.data.length,
                   ),
                 ),
               ],
             );
-          } else if (state is SimilarMoviesFailure) {
+          } else if (state is GenericDataFailure) {
             return Center(
               child: Text(state.errMessage),
             );

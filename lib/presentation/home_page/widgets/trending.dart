@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_movie_application/common/bloc/cubit/generic_data_cubit.dart';
 import 'package:flutter_movie_application/core/configs/assets/app_image.dart';
-import 'package:flutter_movie_application/presentation/home_page/bloc/cubit/trendingMovies/trending_cubit.dart';
+import 'package:flutter_movie_application/di.dart';
+import 'package:flutter_movie_application/domain/movie/entities/movie.dart';
+import 'package:flutter_movie_application/domain/movie/usecases/get_trending_movies.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class TrendingMovies extends StatefulWidget {
@@ -17,14 +20,17 @@ class _TrendingMoviesState extends State<TrendingMovies> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TrendingCubit()..getTrendingMovies(),
-      child: BlocBuilder<TrendingCubit, TrendingState>(
+      create: (context) => GenericDataCubit()
+        ..getData<List<MovieEntity>>(
+          sl<GetTrendingMoviesUseCase>(),
+        ),
+      child: BlocBuilder<GenericDataCubit, GenericDataState>(
         builder: (context, state) {
-          if (state is TrendingMoviesLoading) {
+          if (state is GenericDataLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is TrendingMoviesLoaded) {
+          } else if (state is GenericDataLoaded) {
             return Column(
               children: [
                 // CarouselSlider for Images
@@ -36,19 +42,22 @@ class _TrendingMoviesState extends State<TrendingMovies> {
                     viewportFraction: 0.8, // Fraction of the viewport to show
                     onPageChanged: (index, reason) {
                       setState(() {
-                        _currentPageIndex = index; // Update the current page index
+                        _currentPageIndex =
+                            index; // Update the current page index
                       });
                     },
                   ),
-                  items: state.movies.map((movie) {
+                  items: state.data.map<Widget>((data) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20), // Rounded corners
+                          borderRadius:
+                              BorderRadius.circular(20), // Rounded corners
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.white12.withValues(alpha: 200), // Shadow color
+                              color: Colors.white12
+                                  .withValues(alpha: 200), // Shadow color
                               blurRadius: 6, // Blur radius
                               spreadRadius: 2, // Spread radius
                               offset: const Offset(0, 2), // Shadow offset
@@ -58,12 +67,15 @@ class _TrendingMoviesState extends State<TrendingMovies> {
                         child: Card(
                           elevation: 0, // Disable Card's default shadow
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20), // Rounded corners
+                            borderRadius:
+                                BorderRadius.circular(20), // Rounded corners
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20), // Match card's rounded corners
+                            borderRadius: BorderRadius.circular(
+                                20), // Match card's rounded corners
                             child: Image.network(
-                              AppImages.movieImageBasePath + movie.posterPath.toString(),
+                              AppImages.movieImageBasePath +
+                                  data.posterPath.toString(),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -77,7 +89,7 @@ class _TrendingMoviesState extends State<TrendingMovies> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
-                    state.movies.length,
+                    state.data.length,
                     (index) => Container(
                       width: 8,
                       height: 8,
@@ -93,7 +105,7 @@ class _TrendingMoviesState extends State<TrendingMovies> {
                 ),
               ],
             );
-          } else if (state is TrendingMoviesFailure) {
+          } else if (state is GenericDataFailure) {
             return Center(
               child: Text(state.errMessage),
             );

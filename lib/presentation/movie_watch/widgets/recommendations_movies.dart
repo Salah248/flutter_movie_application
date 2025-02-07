@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_movie_application/common/bloc/cubit/generic_data_cubit.dart';
 import 'package:flutter_movie_application/common/widgets/movie_card.dart';
-import 'package:flutter_movie_application/presentation/movie_watch/Bloc/cubit/movie_recommendations_cubit.dart';
+import 'package:flutter_movie_application/di.dart';
+import 'package:flutter_movie_application/domain/movie/entities/movie.dart';
+import 'package:flutter_movie_application/domain/movie/usecases/get_movie_recommendation.dart';
 
 class RecommendationsMovies extends StatelessWidget {
   const RecommendationsMovies({super.key, required this.id});
@@ -10,14 +13,14 @@ class RecommendationsMovies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MovieRecommendationsCubit()..getMovieRecommendations(id),
-      child: BlocBuilder<MovieRecommendationsCubit, MovieRecommendationsState>(
+      create: (context) =>GenericDataCubit()..getData<List<MovieEntity>>(sl<GetMovieRecommendationsUseCase>(),params: id),
+      child: BlocBuilder<GenericDataCubit, GenericDataState>(
         builder: (context, state) {
-          if (state is MovieRecommendationsLoading) {
+          if (state is GenericDataLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is MovieRecommendationsLoaded) {
+          } else if (state is GenericDataLoaded) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -35,18 +38,18 @@ class RecommendationsMovies extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return MovieCard(
-                        movieEntity: state.movies[index],
+                        movieEntity: state.data[index],
                       );
                     },
                     separatorBuilder: (context, index) => SizedBox(
                       width: 10,
                     ),
-                    itemCount: state.movies.length,
+                    itemCount: state.data.length,
                   ),
                 ),
               ],
             );
-          } else if (state is MovieRecommendationsFailure) {
+          } else if (state is GenericDataFailure) {
             return Center(
               child: Text(state.errMessage),
             );
