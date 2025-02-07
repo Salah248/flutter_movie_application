@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_movie_application/common/widgets/tv_cart.dart';
+import 'package:flutter_movie_application/common/widgets/tv_card.dart';
 import 'package:flutter_movie_application/presentation/home_page/bloc/cubit/popularTv/popular_tv_cubit.dart';
 
 class PopularTv extends StatelessWidget {

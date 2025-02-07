@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_application/common/helper/navigation/app_navigation.dart';
 import 'package:flutter_movie_application/domain/movie/entities/movie.dart';
+import 'package:flutter_movie_application/presentation/movie_watch/moive_watch_page.dart';
 import 'package:flutter_movie_application/presentation/resources/app_colores.dart';
 
 class MovieCard extends StatelessWidget {
@@ -13,7 +15,9 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){},
+      onTap: (){
+        AppNavigator.push(context, MoiveWatchPage(movieEntity: movieEntity,));
+      },
       child: Container(
         width: 180,
         decoration: BoxDecoration(

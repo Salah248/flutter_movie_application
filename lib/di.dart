@@ -4,7 +4,10 @@ import 'package:flutter_movie_application/data/Tv/sources/tv.dart';
 import 'package:flutter_movie_application/data/movie/repositories/movie.dart';
 import 'package:flutter_movie_application/data/movie/sources/movie.dart';
 import 'package:flutter_movie_application/domain/movie/repositories/moive.dart';
+import 'package:flutter_movie_application/domain/movie/usecases/get_movie_recommendation.dart';
+import 'package:flutter_movie_application/domain/movie/usecases/get_movie_trailer.dart';
 import 'package:flutter_movie_application/domain/movie/usecases/get_now_playing_movies.dart';
+import 'package:flutter_movie_application/domain/movie/usecases/get_similar_movies.dart';
 import 'package:flutter_movie_application/domain/tv/repository/tv.dart';
 import 'package:flutter_movie_application/domain/tv/usecases/get_popular_movies.dart';
 import 'package:flutter_movie_application/domain/movie/usecases/get_trending_movies.dart';
@@ -27,6 +30,9 @@ sl.registerSingleton<TvRepository>(TvRepositoryImpl());
 sl.registerSingleton<GetTrendingMoviesUseCase>(GetTrendingMoviesUseCase());
 sl.registerSingleton<GetNowPlayingMoviesUseCase>(GetNowPlayingMoviesUseCase());
 sl.registerSingleton<GetPopularTvUseCase>(GetPopularTvUseCase());
+sl.registerSingleton<GetMovieTrailerUseCase>(GetMovieTrailerUseCase());
+sl.registerSingleton<GetMovieRecommendationsUseCase>(GetMovieRecommendationsUseCase());
+sl.registerSingleton<GetSimilarMoviesUseCase>(GetSimilarMoviesUseCase());
 
 
 }
