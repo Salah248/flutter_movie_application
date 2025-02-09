@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_movie_application/common/bloc/cubit/generic_data_cubit.dart';
+import 'package:flutter_movie_application/common/helper/navigation/app_navigation.dart';
 import 'package:flutter_movie_application/core/configs/assets/app_image.dart';
 import 'package:flutter_movie_application/di.dart';
 import 'package:flutter_movie_application/domain/movie/entities/movie.dart';
 import 'package:flutter_movie_application/domain/movie/usecases/get_trending_movies.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_movie_application/presentation/movie_watch/moive_watch_page.dart';
 
 class TrendingMovies extends StatefulWidget {
   const TrendingMovies({super.key});
@@ -64,19 +66,27 @@ class _TrendingMoviesState extends State<TrendingMovies> {
                             ),
                           ],
                         ),
-                        child: Card(
-                          elevation: 0, // Disable Card's default shadow
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(20), // Rounded corners
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                20), // Match card's rounded corners
-                            child: Image.network(
-                              AppImages.movieImageBasePath +
-                                  data.posterPath.toString(),
-                              fit: BoxFit.cover,
+                        child: GestureDetector(
+                          onTap: () {
+                            AppNavigator.push(
+                              context,
+                              MoiveWatchPage(movieEntity: data),
+                            );
+                          },
+                          child: Card(
+                            elevation: 0, // Disable Card's default shadow
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(20), // Rounded corners
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  20), // Match card's rounded corners
+                              child: Image.network(
+                                AppImages.movieImageBasePath +
+                                    data.posterPath.toString(),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
