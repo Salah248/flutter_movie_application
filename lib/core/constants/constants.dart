@@ -7,6 +7,8 @@ class ApiUrl {
   static const nowPlayingMovies ='movie/now_playing?api_key=$apiKey';
   static const popularMovies ='tv/popular?api_key=$apiKey';
   static const movie ='movie/';
+  static const tv ='tv/';
+  static const search ='search/';
   static const trailerBase ='https://www.youtube.com/watch?v=';
 
 }

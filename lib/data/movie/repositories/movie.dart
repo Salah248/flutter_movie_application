@@ -58,20 +58,29 @@ class MovieRepositoryImpl extends MoiveRepository {
 
     return returnData.fold(
       (error) {
-        return Left(error);
+        return Left(error.toString());
       },
       (data) {
-        // استخراج قائمة النتائج من البيانات
+        // Convert results to List
         final results = data['results'] as List;
 
         if (results.isEmpty) {
-          // في حالة عدم وجود تريلر، يمكنك إعادة رسالة خطأ مناسبة
+          // If no trailer found, return an error message
           return Left("No trailer found for this movie.");
         }
+        
+        // Use the first result that matches your criteria (e.g., type "Trailer")
+        final trailerJson = results.firstWhere(
+          (item) => item['type'] == 'Trailer',
+          orElse: () => null,
+        );
 
-        // استخدام أول عنصر من القائمة لتحويله إلى نموذج
-        final trailerModel = TrailerModel.fromJson(results.first);
-        // تحويل النموذج إلى كيان (Entity) باستخدام المابّر
+        if (trailerJson == null) {
+          return Left("No trailer of type 'Trailer' found for this movie.");
+        }
+
+        // Create the trailer model from the JSON
+        final trailerModel = TrailerModel.fromJson(trailerJson);
         final trailerEntity = TrailerMapper.toEntity(trailerModel);
 
         return Right(trailerEntity);
@@ -101,6 +110,24 @@ class MovieRepositoryImpl extends MoiveRepository {
   Future<Either> getSimilarMovies(int movieId) async {
     var returnedData =
         await sl<MovieService>().getSimilarMovies(movieId);
+    return returnedData.fold((error) {
+      return Left(error);
+    }, (data) {
+      var movies = List.from(data['results'])
+          .map(
+            (item) => MovieMapper.toEntity(
+              MovieModel.fromJson(item),
+            ),
+          )
+          .toList();
+      return Right(movies);
+    });
+  }
+  
+  @override
+  Future<Either> getSearchMovie(String query) async {
+       var returnedData =
+        await sl<MovieService>().getSearchMovie(query);
     return returnedData.fold((error) {
       return Left(error);
     }, (data) {

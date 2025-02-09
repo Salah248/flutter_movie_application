@@ -6,4 +6,5 @@ abstract class MoiveRepository {
   Future<Either> getMovieTrailer(int movieId);
   Future<Either> getMovieRecommendations(int movieId);
   Future<Either> getSimilarMovies(int movieId);
+  Future<Either> getSearchMovie(String query);
 }

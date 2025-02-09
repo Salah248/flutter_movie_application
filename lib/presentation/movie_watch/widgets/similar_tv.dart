@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_movie_application/common/bloc/cubit/generic_data_cubit.dart';
-import 'package:flutter_movie_application/common/widgets/movie_card.dart';
+import 'package:flutter_movie_application/common/widgets/tv_card.dart';
 import 'package:flutter_movie_application/di.dart';
-import 'package:flutter_movie_application/domain/movie/entities/movie.dart';
-import 'package:flutter_movie_application/domain/movie/usecases/get_similar_movies.dart';
+import 'package:flutter_movie_application/domain/tv/entities/tv.dart';
+import 'package:flutter_movie_application/domain/tv/usecases/get_similar_tv.dart';
 
-class SimilarMovies extends StatelessWidget {
-  const SimilarMovies({super.key, required this.id});
+class SimilarTv extends StatelessWidget {
+  const SimilarTv({super.key, required this.id});
   final int id;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GenericDataCubit()
-        ..getData<List<MovieEntity>>(
-          sl<GetSimilarMoviesUseCase>(),
+        ..getData<List<TvEntity>>(
+          sl<GetSimilarTvUseCase>(),
           params: id,
         ),
       child: BlocBuilder<GenericDataCubit, GenericDataState>(
@@ -37,7 +37,7 @@ class SimilarMovies extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Similar Movies',
+                  'Similar Tv',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -49,8 +49,8 @@ class SimilarMovies extends StatelessWidget {
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return MovieCard(
-                        movieEntity: state.data[index],
+                      return TVCard(
+                        tvEntity: state.data[index],
                       );
                     },
                     separatorBuilder: (context, index) => SizedBox(

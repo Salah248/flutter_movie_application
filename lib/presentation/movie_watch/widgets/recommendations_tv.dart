@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_movie_application/common/bloc/cubit/generic_data_cubit.dart';
-import 'package:flutter_movie_application/common/widgets/movie_card.dart';
+import 'package:flutter_movie_application/common/widgets/tv_card.dart';
 import 'package:flutter_movie_application/di.dart';
-import 'package:flutter_movie_application/domain/movie/entities/movie.dart';
-import 'package:flutter_movie_application/domain/movie/usecases/get_similar_movies.dart';
+import 'package:flutter_movie_application/domain/tv/entities/tv.dart';
+import 'package:flutter_movie_application/domain/tv/usecases/get_recommendation_tv.dart';
 
-class SimilarMovies extends StatelessWidget {
-  const SimilarMovies({super.key, required this.id});
+class RecommendationsTv extends StatelessWidget {
+  const RecommendationsTv({super.key, required this.id});
   final int id;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GenericDataCubit()
-        ..getData<List<MovieEntity>>(
-          sl<GetSimilarMoviesUseCase>(),
+        ..getData<List<TvEntity>>(
+          sl<GetRecommendationsTvUseCase>(),
           params: id,
         ),
       child: BlocBuilder<GenericDataCubit, GenericDataState>(
@@ -25,19 +25,11 @@ class SimilarMovies extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is GenericDataLoaded) {
-             if (state.data.isEmpty) {
-              return Center(
-                child: Text(
-                  'THERE IS NO SIMILAR MOVIES FOR THIS MOVIE 😢',
-                  style: TextStyle(fontSize: 16,color: Colors.red),
-                ),
-              );
-            }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Similar Movies',
+                  'Recommendations',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -49,8 +41,8 @@ class SimilarMovies extends StatelessWidget {
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return MovieCard(
-                        movieEntity: state.data[index],
+                      return TVCard(
+                        tvEntity: state.data[index],
                       );
                     },
                     separatorBuilder: (context, index) => SizedBox(
