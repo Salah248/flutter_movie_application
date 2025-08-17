@@ -61,7 +61,7 @@ class _TrendingMoviesState extends State<TrendingMovies> {
                               color: Colors.white12
                                   .withValues(alpha: 200), // Shadow color
                               blurRadius: 6, // Blur radius
-                              spreadRadius: 2, // Spread radius
+                              spreadRadius: 0, // Spread radius
                               offset: const Offset(0, 2), // Shadow offset
                             ),
                           ],
